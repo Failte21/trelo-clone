@@ -1,8 +1,10 @@
-import React from 'react'
+import React from 'react';
+import '../stylesheets/main.scss';
+import EditableText from './EditableText'
 
-const Todo = ({toggleCheckFn, removeFn, todo={content: 'test'}}) => (
+const Todo = ({toggleCheckFn, removeFn, todo, changeFn}) => (
     <div className={'todo'}>
-        <h3>{todo.content}</h3>
+        <EditableText size={'SMALL'} content={todo.content} changeFn={changeFn}/>
         <button onClick={toggleCheckFn}>
             {
                 todo.status === 'TODO' ?

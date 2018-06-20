@@ -69,3 +69,20 @@ button.editable {
     width: 500px;
     padding: 15px;
 }
+
+.todo {
+    display: flex;
+    align-items: center;
+
+    button {
+        border: none;
+    }
+}
+
+.top-bar {
+    display: flex;
+}
+
+.users-container {
+    display: flex;
+}
