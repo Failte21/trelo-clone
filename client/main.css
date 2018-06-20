@@ -2,3 +2,15 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+
+button {
+    background-color: transparent;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.block {
+    display: block;
+}
