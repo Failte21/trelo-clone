@@ -1,0 +1,5 @@
+node_modules/
+
+# webstorm stuff
+.idea
+package-lock.json
