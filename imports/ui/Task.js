@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import EditableText from './EditableText';
-import { Dropdown } from 'semantic-ui-react';
 import TodoList from './TodoList';
 import AddButton from './AddButton';
 import {Tasks} from '../api/tasks';
-import {Todos} from '../api/todos'
+import {Todos} from '../api/todos';
+import { withTracker } from 'meteor/react-meteor-data';
 
 class Task extends Component {
 
@@ -15,12 +15,12 @@ class Task extends Component {
     }
 
     addTodo = () => {
-        const { todos = [] } = this.props.task;
-        const lastTodo = todos[todos.length - 1] || {};
-        const id = lastTodo.id + 1 || 1;
-        const todo = {id, content: 'Wash my socks', status: 'TODO'}
-        console.log({todo})
-        Tasks.update(this.props.task._id, {$push: {todos: todo}})
+        const todo = {
+            taskId: this.props.task._id,
+            content: "Wash my socks",
+            status: "TODO"
+        }
+        Todos.insert(todo)
     }
 
     changeTitle = newTitle => {
@@ -28,7 +28,8 @@ class Task extends Component {
     }
 
     render() {
-        const {task, removeFn, toggleCheckFn, changeUserFn, changeTodoFn, addTodoFn} = this.props;
+        const {task, removeFn, toggleCheckFn, todos, changeTodoFn, addTodoFn} = this.props;
+        console.log({todos})
         return (
             <div className={'task'}>
 
@@ -48,7 +49,7 @@ class Task extends Component {
                 <TodoList
                     changeFn={changeTodoFn}
                     toggleCheckFn={toggleCheckFn}
-                    todos={task.todos}
+                    todos={todos}
                     removeFn={removeFn}
                 />
                 <AddButton size={'SMALL'} addFn={this.addTodo}/>
@@ -57,4 +58,7 @@ class Task extends Component {
     }
 }
 
-export default Task;
+export default withTracker(({task}) => {
+    console.log(task._id.valueOf())
+    return {todos: Todos.find({taskId: task._id}).fetch()}
+})(Task);

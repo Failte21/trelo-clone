@@ -59,6 +59,11 @@ const removeFn = () => {
 }
 
 class App extends Component {
+
+    addTask = () => {
+        Tasks.insert({title: "New task"})
+    }
+
     render () {
         return (
             <div className={'app'}>
@@ -109,10 +114,11 @@ class App extends Component {
                         />
                     )}
                 </div>
+                <AddButton size={'MEDIUM'} addFn={this.addTask}/>
             </div>
         )
     }
 }
 
-export default withTracker(() => ({tasks: Tasks.find().fetch()}))(App);
+export default withTracker(props => ({tasks: Tasks.find().fetch()}))(App);
 // export default App;

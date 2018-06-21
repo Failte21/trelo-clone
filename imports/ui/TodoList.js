@@ -1,18 +1,18 @@
 import React from 'react';
 import Todo from './Todo';
 
-const TodoList = ({toggleCheckFn, removeFn, todos, changeFn}) => (
-    <div className={'todo-list'}>
-        {todos.map((todo, i) => (
-            <Todo
-                key={i}
-                todo={todo}
-                toggleCheckFn={toggleCheckFn}
-                removeFn={removeFn}
-                changeFn={changeFn}
-            />
-        ))}
-    </div>
-)
+const TodoList = ({todos}) => {
+    console.log({todos})
+    return (
+        <div className={'todo-list'}>
+            {todos.map((todo) => (
+                <Todo
+                    key={todo._id}
+                    todo={todo}
+                />
+            ))}
+        </div>
+    )
+}
 
 export default TodoList;
