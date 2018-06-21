@@ -5,6 +5,7 @@ import AddButton from './AddButton';
 import Task from './Task';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks.js';
+import {Users} from '../api/users'
 
 const changeFn = e => console.log(e)
 
@@ -27,20 +28,7 @@ const bojack = {
     imgUrl: "https://s.yimg.com/ny/api/res/1.2/qqTBZv8W.JBeMMhgSn6iJQ--/YXBwaWQ9aGlnaGxhbmRlcjtzbT0xO3c9ODAw/http://l.yimg.com/cd/resizer/2.0/original/SrKSspxPimv7uh39-rEOEE6yPT8"
 }
 
-const users = [homer, snoopy, bojack];
-
-const todo = {
-    content: 'clean my socks',
-    status: 'DONE'
-}
-
-const task = {
-    title: 'First task',
-    user: users[0],
-    todos: [todo]
-}
-
-const tasks = [task];
+// const users = [homer, snoopy, bojack];
 
 const changeTodoFn = (e) => {
     console.log('rename todo: ', e);
@@ -61,51 +49,29 @@ const removeFn = () => {
 class App extends Component {
 
     addTask = () => {
-        Tasks.insert({title: "New task"})
+        Tasks.insert({title: "New task", user: this.props.users[0]})
+    }
+
+    addUser = () => {
+        Users.insert(homer);
     }
 
     render () {
+        console.log(this.props.users)
         return (
             <div className={'app'}>
-                {/*<h1>UI Playground</h1>*/}
-
-                {/*<h3>EditableText</h3>*/}
-                {/*<EditableText changeFn={changeFn} content={'test'} size={'LARGE'}/>*/}
-                {/*<EditableText changeFn={changeFn} content={'test'} size={'MEDIUM'}/>*/}
-                {/*<EditableText changeFn={changeFn} content={'test'} size={'SMALL'}/>*/}
-
-                {/*<h3>UserIcon</h3>*/}
-                {/*<UserIcon user={users[0]} size={'LARGE'}/>*/}
-                {/*<UserIcon user={users[1]} size={'MEDIUM'}/>*/}
-                {/*<UserIcon user={users[2]} size={'SMALL'}/>*/}
-
-                {/*<h3>Add button</h3>*/}
-                {/*<AddButton addFn={() => console.log('add')} size={'LARGE'}/>*/}
-                {/*<AddButton addFn={() => console.log('add')} size={'MEDIUM'}/>*/}
-                {/*<AddButton addFn={() => console.log('add')} size={'SMALL'}/>*/}
-
-                {/*<h3>Task</h3>*/}
-                {/*<Task*/}
-                    {/*task={task}*/}
-                    {/*users={users}*/}
-                    {/*changeUserFn={changeUserFn}*/}
-                    {/*toggleCheckFn={toggleCheckFn}*/}
-                    {/*removeFn={removeFn}*/}
-                    {/*changeTodoFn={changeTodoFn}*/}
-                    {/*addTodoFn={addTodoFn}*/}
-                {/*/>*/}
                 <div className={'top-bar'}>
                     <EditableText changeFn={changeFn} content={'TITLE'} size={'LARGE'}/>
                     <div className={'users-container'}>
-                        {users.map((user, i) => <UserIcon key={i} user={user} size={'SMALL'}/>)}
-                        <AddButton addFn={addTodoFn} size={'SMALL'}/>
+                        {this.props.users.map(user => <UserIcon key={user._id} user={user} size={'SMALL'}/>)}
+                        <AddButton addFn={this.addUser} size={'SMALL'}/>
                     </div>
                 </div>
                 <div className={'task-container'}>
                     {this.props.tasks.map(task =>
                         <Task
                             task={task}
-                            users={users}
+                            users={this.props.users}
                             changeUserFn={changeUserFn}
                             toggleCheckFn={toggleCheckFn}
                             removeFn={removeFn}
@@ -113,12 +79,15 @@ class App extends Component {
                             addTodoFn={addTodoFn}
                         />
                     )}
+                    <AddButton size={'MEDIUM'} addFn={this.addTask}/>
                 </div>
-                <AddButton size={'MEDIUM'} addFn={this.addTask}/>
             </div>
         )
     }
 }
 
-export default withTracker(props => ({tasks: Tasks.find().fetch()}))(App);
+export default withTracker(()=> ({
+    users: Users.find().fetch(),
+    tasks: Tasks.find().fetch()
+}))(App);
 // export default App;

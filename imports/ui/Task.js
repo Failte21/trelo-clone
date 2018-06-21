@@ -5,13 +5,20 @@ import AddButton from './AddButton';
 import {Tasks} from '../api/tasks';
 import {Todos} from '../api/todos';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Dropdown } from 'semantic-ui-react';
 
 class Task extends Component {
 
-    usersToListElem = users => {
-        return users.map(({name, imgUrl}) => ({
+    usersToListElem = () => {
+        return this.props.users.map(({name, imgUrl}) => ({
             text: name, image: imgUrl, value: name
         }))
+    }
+
+    nameToUser = name => this.props.users.find(e => e.name === name);
+
+    removeTask = () => {
+        Tasks.remove(this.props.task._id);
     }
 
     addTodo = () => {
@@ -27,30 +34,29 @@ class Task extends Component {
         Tasks.update(this.props.task._id, {$set: {title: newTitle}});
     }
 
+    changeUser = (e, {value}) => {
+        const user = this.nameToUser(value);
+    }
+
     render() {
-        const {task, removeFn, toggleCheckFn, todos, changeTodoFn, addTodoFn} = this.props;
-        console.log({todos})
+        const {task, todos} = this.props;
         return (
             <div className={'task'}>
-
+                <button onClick={this.removeTask}><i className={'fas fa-trash'}></i></button>
                 <EditableText
                     changeFn={this.changeTitle}
                     size={'MEDIUM'}
                     content={task.title}
                 />
-                {/*<h3>{task.user.name}</h3>*/}
-                {/*<Dropdown*/}
-                    {/*selected={'snoopy'}*/}
-                    {/*onChange={changeUserFn}*/}
-                    {/*fluid*/}
-                    {/*selection*/}
-                    {/*options={this.usersToListElem(this.props.users)}*/}
-                {/*/>*/}
+                <h3>{task.user.name}</h3>
+                <Dropdown
+                    onChange={this.changeUser}
+                    fluid
+                    selection
+                    options={this.usersToListElem()}
+                />
                 <TodoList
-                    changeFn={changeTodoFn}
-                    toggleCheckFn={toggleCheckFn}
                     todos={todos}
-                    removeFn={removeFn}
                 />
                 <AddButton size={'SMALL'} addFn={this.addTodo}/>
             </div>
@@ -59,6 +65,5 @@ class Task extends Component {
 }
 
 export default withTracker(({task}) => {
-    console.log(task._id.valueOf())
     return {todos: Todos.find({taskId: task._id}).fetch()}
 })(Task);

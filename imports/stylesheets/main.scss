@@ -64,10 +64,21 @@ button.editable {
     font-size: 15px;
 }
 
-.task {
-    border: solid black 1px;
-    width: 500px;
-    padding: 15px;
+
+.task-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    .task {
+        border: solid black 1px;
+        min-width: 500px;
+        padding: 15px;
+        margin: 10px;
+
+        button {
+            border: none;
+        }
+    }
 }
 
 .todo {
