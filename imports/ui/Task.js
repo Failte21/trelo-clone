@@ -48,13 +48,13 @@ class Task extends Component {
                     size={'MEDIUM'}
                     content={task.title}
                 />
-                <h3>{task.user.name}</h3>
+                {/* <h3>{task.user.name}</h3>
                 <Dropdown
                     onChange={this.changeUser}
                     fluid
                     selection
                     options={this.usersToListElem()}
-                />
+                /> */}
                 <TodoList
                     todos={todos}
                 />

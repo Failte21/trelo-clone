@@ -13,6 +13,8 @@ const addTodoFn = () => {
     console.log('add todo');
 }
 
+
+//mock for users
 const homer = {
     name: "Homer Simpson",
     imgUrl: "http://interactive.nydailynews.com/2016/05/simpsons-quiz/img/simp1.jpg"
@@ -57,19 +59,19 @@ class App extends Component {
     }
 
     render () {
-        console.log(this.props.users)
         return (
             <div className={'app'}>
                 <div className={'top-bar'}>
                     <EditableText changeFn={changeFn} content={'TITLE'} size={'LARGE'}/>
-                    <div className={'users-container'}>
+                    {/*<div className={'users-container'}>
                         {this.props.users.map(user => <UserIcon key={user._id} user={user} size={'SMALL'}/>)}
                         <AddButton addFn={this.addUser} size={'SMALL'}/>
-                    </div>
+                    </div>*/}
                 </div>
                 <div className={'task-container'}>
                     {this.props.tasks.map(task =>
                         <Task
+                            key={task._id}
                             task={task}
                             users={this.props.users}
                             changeUserFn={changeUserFn}
